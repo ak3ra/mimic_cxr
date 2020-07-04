@@ -1,2 +1,10 @@
-# mimic_cxr
-What can we learning from mimic chest xray images
+# mimic cxr
+
+### MIMIC Physionet CXR:
+This is a collection of chest X-ray images containing diagnosis of different chest Xray infections.
+
+### TODO
+ * Add data description
+ * Add data visualization examples
+ * Train a simple classification model
+ 
