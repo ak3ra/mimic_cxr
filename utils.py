@@ -12,3 +12,8 @@ def create_img_list(data_path):
             if file.endswith(".jpg"):
                 img_files.append(os.path.join(root, file))
     return img_files
+
+if __name__ == "__main__":
+    data_path = "/scratch/akera/mmic_data/physionet.org/"
+    print(os.listdir(data_path))
+
