@@ -14,8 +14,7 @@ def create_img_list(data_path):
     return img_files
 
 if __name__ == "__main__":
-    data_path = "/home/benjamin/Documents/code/dummy_data"
+    data_path = "/scratch/akera/mmic_data/physionet.org/files/mimic-cxr-jpg/2.0.0/files/"
     img_list = create_img_list(data_path)
-    img_dataframe = pd.DataFrame(img_list)
-    img_dataframe.to_csv("image_paths.csv")
+    pd.DataFrame(img_list).to_csv("../output/image_paths.csv")
 
