@@ -11,7 +11,7 @@ class PneumoniaDataset(Dataset):
         ## transforms
         self.to_tensor = transforms.ToTensor()
         # read csv file
-        self.data_info = pd.read_csv('output/pneumonia_images_and_labels.csv', header=None)
+        self.data_info = pd.read_csv('output/pneumonia_images_and_labels.csv')
         #images
         self.image_arr = np.asarray(self.data_info.iloc[:,4])
         #labels
