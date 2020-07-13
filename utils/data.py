@@ -1,17 +1,17 @@
+import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader, Dataset
 import torchvision
 from torchvision import transforms
-
-pneumonia_frame = pd.read_csv('output/pneumonia_images_and_labels.csv')
+from PIL import Image
 
 class PneumoniaDataset(Dataset):
     def __init__(self, csv_path):
         ## transforms
         self.to_tensor = transforms.ToTensor()
         # read csv file
-        self.data_info = pd.read_csv('../output/pneumonia_images_and_labels.csv', header=None)
+        self.data_info = pd.read_csv('output/pneumonia_images_and_labels.csv', header=None)
         #images
         self.image_arr = np.asarray(self.data_info.iloc[:,4])
         #labels
@@ -32,5 +32,6 @@ class PneumoniaDataset(Dataset):
         return self.data_len
 
 if __name__ == "__main__":
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     data = PneumoniaDataset('../output/pneumonia_images_and_labels.csv')
+    print(data)
