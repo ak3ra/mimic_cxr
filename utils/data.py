@@ -6,22 +6,30 @@ from torchvision import transforms
 
 pneumonia_frame = pd.read_csv('output/pneumonia_images_and_labels.csv')
 
-print(img_name)
+class PneumoniaDataset(Dataset):
+    def __init__(self, csv_path):
+        ## transforms
+        self.to_tensor = transforms.ToTensor()
+        # read csv file
+        self.data_info = pd.read_csv('../output/pneumonia_images_and_labels.csv', header=None)
+        #images
+        self.image_arr = np.asarray(self.data_info.iloc[:,4])
+        #labels
+        self.label_arr = np.asarray(self.data_info.iloc[:,5])
+        # length of dataset
+        self.data_len = len(self.data_info.index)
 
-def __init__(self, data, transform=None):
-    self.image_frame = data
-    self.transform = transform
+    def __getitem__(self, index):
+        single_image_name = self.image_arr[index]
+        img_as_img = Image.open(single_image_name)
+        # transform to tensor
+        img_as_tensor = self.to_tensor(img_as_img)
+        # get label
+        single_image_label = self.label_arr[index]
+        return (img_as_tensor, single_image_label)
+    
+    def __len__(self):
+        return self.data_len
 
-def __len__(self, idx):
-    return len(self.image_frame)
-
-def __getitem__(self, idx):
-    if torch.is_tensor(idx):
-        idx = idx.tolist()
-
-    label = self.image_frame.loc[idx, 'Pneumonia']
-    pic = Path(self.image_frame.loc[idx, 'image_path'])
-    img = Image.open(pic)
-
-    if self.transform:
-        image = self.transform(img)
+if __name__ == "__main__":
+    data = PneumoniaDataset('../output/pneumonia_images_and_labels.csv')
