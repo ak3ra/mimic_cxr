@@ -33,4 +33,13 @@ class PneumoniaDataset(Dataset):
 
 if __name__ == "__main__":
     import pdb; pdb.set_trace()
-    data = PneumoniaDataset('../output/pneumonia_images_and_labels.csv')
+    pneumonia_data = PneumoniaDataset('../output/pneumonia_images_and_labels.csv')
+    pneumonia_dataloader = torch.utils.data.DataLoader(
+        dataset = pneumonia_data,
+        batch_size = 10,
+        shuffle = False
+    )
+
+    for i, (images,labels) in enumerate(pneumonia_dataloader):
+        print(images)
+        print(labels)
