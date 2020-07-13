@@ -32,4 +32,5 @@ class PneumoniaDataset(Dataset):
         return self.data_len
 
 if __name__ == "__main__":
+    import pdb; pdb.set_trace()
     data = PneumoniaDataset('../output/pneumonia_images_and_labels.csv')
