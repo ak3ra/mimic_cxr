@@ -42,7 +42,7 @@ class CNN(nn.Module):
         x = self.pool(x)
         x = F.relu(self.conv2(x))
         x = self.pool(x)
-        x = reshape(x.shape[0],-1)
+        x = x.reshape(x.shape[0],-1)
         x = self.fc1(x)
 
         return x
