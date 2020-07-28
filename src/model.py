@@ -46,3 +46,28 @@ model.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 
+for epoch in range(num_epochs):
+    losses = []
+
+    for batch_idx, (data, targets) in enumerate(train_set):
+        data = data.to(device)
+        targets = targets.to(device)
+
+        ## forward
+        scores = model(data)
+        loss = criterion(scores, targets)
+
+        losses.append(loss.item())
+
+        ## Backward
+        optimizer.zero_grad()
+        loss.backward()
+
+        ## Gradient descent
+
+        optimizer.step()
+
+    print(f'cost at epoch {epoch} is {sum(losses)/len(losses)}')
+
+
+
