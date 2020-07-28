@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 from torch.utils.data import DataLoader
-import torch.nn.Functional as F
 from data import PneumoniaDataset
 from torchvision import transforms
 
