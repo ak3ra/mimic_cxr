@@ -49,8 +49,8 @@ for epoch in range(num_epochs):
     losses = []
 
     for batch_idx, (data, targets) in enumerate(train_loader):
-        data = data.to(device)
-        targets = targets.to(device)
+        data = data.to(device=device)
+        targets = targets.to(device=device)
 
         ## forward
         scores = model(data)
