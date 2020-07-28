@@ -19,7 +19,7 @@ class CNN(nn.Module):
             in_channels = 1,
             out_channels = 8,
             kernel_size = (3,3),
-            strid=(1,1),
+            stride=(1,1),
             padding = (1,1)
         )
 
