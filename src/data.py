@@ -28,30 +28,3 @@ class PneumoniaDataset(Dataset):
             image = self.transform(image)
 
         return (image, y_label)
-
-my_transforms = transforms.Compose([
-    transforms.ToPILImage(),
-    transforms.Resize((512,512)),
-    transforms.RandomCrop((224,224)),
-    transforms.ToTensor(),
-    #transforms.Normalize(mean=[0.0,0.0,0.0], std=[1.0, 1.0, 1.0])
-    ])
-
-
-
-
-pneumonia_dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels.csv", root_dir = "/scratch/akera/mmic_data/physionet.org/files/mimic-cxr-jpg/2.0.0/files", transform = my_transforms)
-
-dataloader = torch.utils.data.DataLoader(dataset=pneumonia_dataset,batch_size=1, shuffle=False)
-
-#for i, (images, labels) in enumerate(dataloader):
-#    print(images.shape)
-#    print(labels.shape)
-
-img_num = 0
-for _ in range(10):
-    for img,label  in pneumonia_dataset:
-        save_image(img, 'img'+str(img_num)+'.png')
-        img_num +=1
-
-
