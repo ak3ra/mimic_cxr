@@ -34,7 +34,7 @@ class CNN(nn.Module):
 
         )
 
-        self.fc1 = nn.Linear(16*7*7, num_classes)
+        self.fc1 = nn.Linear(50176, num_classes)
 
 
     def forward(self, x):
