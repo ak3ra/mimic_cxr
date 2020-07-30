@@ -11,6 +11,8 @@ This is a collection of chest X-ray images containing diagnosis of different che
 
 ## File strucutre
 
+```
+
 ├── notebooks
 │   ├── Full_data_prep.ipynb
 │   └── Pneumonia_data_prep.ipynb
@@ -28,4 +30,4 @@ This is a collection of chest X-ray images containing diagnosis of different che
     ├── data.py
     └── generate_imgcsv.py
 
-    
+```
