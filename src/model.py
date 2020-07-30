@@ -11,8 +11,6 @@ from torchvision import transforms
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-
-## Custom Model
 class CNN(nn.Module):
     def __init__(self, in_channel=1, num_classes=2):
         super(CNN, self).__init__()
@@ -106,35 +104,81 @@ train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
 
 
-#model = CNN().to(device)
 model = Convnet().to(device)
 
 #loss and Optimizer
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr = learning_rate)
+# criterion = nn.CrossEntropyLoss()
+# optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 
-for epoch in range(num_epochs):
-    losses = []
+# for epoch in range(num_epochs):
+#     losses = []
 
-    for batch_idx, (data, targets) in enumerate(train_loader):
-        data = data.to(device=device)
-        targets = targets.to(device=device)
-        targets = torch.nn.functional.one_hot(targets)
-        #print(targets)
+#     for batch_idx, (data, targets) in enumerate(train_loader):
+#         data = data.to(device=device)
+#         targets = targets.to(device=device)
+#         targets = torch.nn.functional.one_hot(targets)
+#         #print(targets)
 
-        ## forward
-        scores = model(data)
-        loss = criterion(scores, torch.max(targets,1)[1])
+#         ## forward
+#         scores = model(data)
+#         loss = criterion(scores, torch.max(targets,1)[1])
 
-        print(loss)
-        losses.append(loss.item())
+#         print(loss)
+#         losses.append(loss.item())
 
-        ## Backward
+#         ## Backward
+#         optimizer.zero_grad()
+#         loss.backward()
+
+#         ## Gradient descent
+
+#         optimizer.step()
+
+#     print(f'cost at epoch {epoch} is {sum(losses)/len(losses)}')
+
+losses = []
+accuracies = []
+epoches = 5
+start = time.time()
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
+for epoch in range(epoches):
+    epoch_loss = 0
+    epoch_accuracy = 0
+    for X, y in train_loader:
+        X = X.to(device)
+        y = y.to(device)
+        preds = model(X)
+        loss = loss_fn(preds, y)
+        
         optimizer.zero_grad()
         loss.backward()
-
-        ## Gradient descent
-
         optimizer.step()
+        
+        accuracy = ((preds.argmax(dim=1) == y).float().mean())
+        epoch_accuracy += accuracy
+        epoch_loss += loss
+        print('.', end='', flush=True)
+        
+    epoch_accuracy = epoch_accuracy/len(train_loader)
+    accuracies.append(epoch_accuracy)
+    epoch_loss = epoch_loss / len(train_loader)
+    losses.append(epoch_loss)
+    print("Epoch: {}, train loss: {:.4f}, train accracy: {:.4f}, time: {}".format(epoch, epoch_loss, epoch_accuracy, time.time() - start))
 
-    print(f'cost at epoch {epoch} is {sum(losses)/len(losses)}')
+
+    with torch.no_grad():
+        val_epoch_loss = 0
+        val_epoch_accuracy = 0
+        for val_X, val_y in test_loader:
+            val_X = val_X.to(device)
+            val_y = val_y.to(device)
+            val_preds = model(val_X)
+            val_loss = loss_fn(val_preds, val_y)
+
+            val_epoch_loss += val_loss            
+            val_accuracy = ((val_preds.argmax(dim=1) == val_y).float().mean())
+            val_epoch_accuracy += val_accuracy
+        val_epoch_accuracy = val_epoch_accuracy/len(valid_dl)
+        val_epoch_loss = val_epoch_loss / len(valid_dl)
+        print("Epoch: {}, valid loss: {:.4f}, valid accracy: {:.4f}, time: {}\n".format(epoch, val_epoch_loss, val_epoch_accuracy, time.time() - start))
