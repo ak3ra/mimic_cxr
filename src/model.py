@@ -50,13 +50,13 @@ class CNN(nn.Module):
 class Convnet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv1 = nn.Conv2d(in_channels = 3, out_channels = 16, kernel_size=(5, 5), stride=2, padding=1)
+        self.conv1 = nn.Conv2d(in_channels = 1, out_channels = 16, kernel_size=(5, 5), stride=2, padding=1)
         self.conv2 = nn.Conv2d(in_channels = 16, out_channels = 32, kernel_size=(5, 5), stride=2, padding=1)
         self.conv3 = nn.Conv2d(in_channels = 32, out_channels = 64, kernel_size=(3, 3), padding=1)
         self.fc1 = nn.Linear(in_features= 64 * 6 * 6, out_features=500)
         self.fc2 = nn.Linear(in_features=500, out_features=50)
-        self.fc3 = nn.Linear(in_features=50, out_features=2)
-        
+        self.fc3 = nn.Linear(in_features=50, out_features=3)
+
         
     def forward(self, X):
         X = F.relu(self.conv1(X))
@@ -72,6 +72,7 @@ class Convnet(nn.Module):
         X = X.view(X.shape[0], -1)
         X = F.relu(self.fc1(X))
         X = F.relu(self.fc2(X))
+        #X = F.log_softmax(X)
         X = self.fc3(X)
         
 #         X = torch.sigmoid(X)
@@ -89,12 +90,12 @@ my_transforms = transforms.Compose([
 ## Hyper Parameters
 
 batch_size = 16
-num_classes = 2
+num_classes = 3
 learning_rate = 1e-3
 num_epochs = 2
 in_channel = 1
 
-dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels.csv", 
+dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels_modified.csv", 
                         root_dir = "/scratch/akera/mmic_data/physionet.org/files/mimic-cxr-jpg/2.0.0/files",
                         transform = my_transforms)
 
@@ -105,7 +106,8 @@ train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
 
 
-model = CNN().to(device)
+#model = CNN().to(device)
+model = Convnet().to(device)
 
 #loss and Optimizer
 criterion = nn.CrossEntropyLoss()
@@ -117,11 +119,14 @@ for epoch in range(num_epochs):
     for batch_idx, (data, targets) in enumerate(train_loader):
         data = data.to(device=device)
         targets = targets.to(device=device)
+        targets = torch.nn.functional.one_hot(targets)
+        #print(targets)
 
         ## forward
         scores = model(data)
-        loss = criterion(scores, targets)
+        loss = criterion(scores, torch.max(targets,1)[1])
 
+        print(loss)
         losses.append(loss.item())
 
         ## Backward

@@ -20,9 +20,13 @@ class PneumoniaDataset(Dataset):
         return len(self.annotations)
 
     def __getitem__(self, index):
-        img_path = os.path.join(self.root_dir, self.annotations.iloc[index, 4])
+        #img_path = os.path.join(self.root_dir, self.annotations.iloc[index, 4])
+        #print(img_path)
+        img_path = self.annotations.iloc[index, 5]
+        #print(img_path)
+        #print(self.annotations.iloc[index,5])
         image =io.imread(img_path)
-        y_label = torch.tensor(int(self.annotations.iloc[index,5]))
+        y_label = torch.tensor(int(self.annotations.iloc[index,6]))
 
         if self.transform:
             image = self.transform(image)
