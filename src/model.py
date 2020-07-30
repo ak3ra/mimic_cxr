@@ -6,6 +6,7 @@ import torchvision
 from torch.utils.data import DataLoader
 from data import PneumoniaDataset
 from torchvision import transforms
+import time
 
 #set device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -87,7 +88,7 @@ my_transforms = transforms.Compose([
 
 ## Hyper Parameters
 
-batch_size = 16
+batch_size = 4
 num_classes = 3
 learning_rate = 1e-3
 num_epochs = 2
@@ -98,7 +99,7 @@ dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels_modified
                         transform = my_transforms)
 
 
-train_set, test_set = torch.utils.data.random_split(dataset, [80000,9280])
+train_set, test_set = torch.utils.data.random_split(dataset, [50,50])
 
 train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
@@ -106,42 +107,13 @@ test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
 
 model = Convnet().to(device)
 
-#loss and Optimizer
-# criterion = nn.CrossEntropyLoss()
-# optimizer = optim.Adam(model.parameters(), lr = learning_rate)
-
-# for epoch in range(num_epochs):
-#     losses = []
-
-#     for batch_idx, (data, targets) in enumerate(train_loader):
-#         data = data.to(device=device)
-#         targets = targets.to(device=device)
-#         targets = torch.nn.functional.one_hot(targets)
-#         #print(targets)
-
-#         ## forward
-#         scores = model(data)
-#         loss = criterion(scores, torch.max(targets,1)[1])
-
-#         print(loss)
-#         losses.append(loss.item())
-
-#         ## Backward
-#         optimizer.zero_grad()
-#         loss.backward()
-
-#         ## Gradient descent
-
-#         optimizer.step()
-
-#     print(f'cost at epoch {epoch} is {sum(losses)/len(losses)}')
-
 losses = []
 accuracies = []
-epoches = 5
+epoches = 50
 start = time.time()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
+
 for epoch in range(epoches):
     epoch_loss = 0
     epoch_accuracy = 0
@@ -179,6 +151,6 @@ for epoch in range(epoches):
             val_epoch_loss += val_loss            
             val_accuracy = ((val_preds.argmax(dim=1) == val_y).float().mean())
             val_epoch_accuracy += val_accuracy
-        val_epoch_accuracy = val_epoch_accuracy/len(valid_dl)
-        val_epoch_loss = val_epoch_loss / len(valid_dl)
+        val_epoch_accuracy = val_epoch_accuracy/len(test_loader)
+        val_epoch_loss = val_epoch_loss / len(test_loader)
         print("Epoch: {}, valid loss: {:.4f}, valid accracy: {:.4f}, time: {}\n".format(epoch, val_epoch_loss, val_epoch_accuracy, time.time() - start))

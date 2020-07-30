@@ -12,7 +12,7 @@ from torchvision.utils import save_image
 
 class PneumoniaDataset(Dataset):
     def __init__(self, csv_file, root_dir, transform=None):
-        self.annotations = pd.read_csv(csv_file)
+        self.annotations = pd.read_csv(csv_file, nrows=100)
         self.root_dir = root_dir
         self.transform = transform
 
