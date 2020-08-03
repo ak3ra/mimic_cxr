@@ -77,8 +77,6 @@ class Convnet(nn.Module):
 #         X = torch.sigmoid(X)
         return X
 
-
-
 my_transforms = transforms.Compose([
     transforms.ToPILImage(),
     transforms.Resize((512,512)),
@@ -86,7 +84,6 @@ my_transforms = transforms.Compose([
     transforms.ToTensor(),
     ])
 
-## Hyper Parameters
 
 batch_size = 4
 num_classes = 3

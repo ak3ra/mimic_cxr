@@ -32,3 +32,23 @@ class PneumoniaDataset(Dataset):
             image = self.transform(image)
 
         return (image, y_label)
+
+my_transforms = transforms.Compose([
+    transforms.ToPILImage(),
+    transforms.Resize((512,512)),
+    transforms.RandomCrop((224,224)),
+    transforms.ToTensor(),
+    ])
+
+
+
+dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels_modified.csv", 
+                        root_dir = "/scratch/akera/mmic_data/physionet.org/files/mimic-cxr-jpg/2.0.0/files",
+                        transform = my_transforms)
+
+
+train_set, test_set = torch.utils.data.random_split(dataset, [50,50])
+
+train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)
+test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
+
