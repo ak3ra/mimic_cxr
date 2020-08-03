@@ -7,21 +7,15 @@ from torch.utils.data import DataLoader
 from data import PneumoniaDataset
 from data import my_transforms,dataset,train_set,test_set, train_loader, test_loader
 from torchvision import transforms
-from model import model
+from model import Convnet, CNN
 import time
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-
-batch_size = 4
-num_classes = 3
-learning_rate = 1e-3
-num_epochs = 2
-in_channel = 1
+model = Convnet().to(device)
 
 losses = []
 accuracies = []
-epoches = 50
+epoches = 1
 start = time.time()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
@@ -29,6 +23,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
 for epoch in range(epoches):
     epoch_loss = 0
     epoch_accuracy = 0
+
     for X, y in train_loader:
         X = X.to(device)
         y = y.to(device)
