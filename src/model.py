@@ -104,6 +104,7 @@ train_set, test_set = torch.utils.data.random_split(dataset, [50,50])
 train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
 
+import pdb;pdb.settrace() 
 
 model = Convnet().to(device)
 
