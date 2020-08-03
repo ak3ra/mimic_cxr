@@ -67,37 +67,12 @@ class Convnet(nn.Module):
         X = F.relu(self.conv3(X))
         X = F.max_pool2d(X, 2)
         
-#         print(X.shape)
         X = X.view(X.shape[0], -1)
         X = F.relu(self.fc1(X))
         X = F.relu(self.fc2(X))
-        #X = F.log_softmax(X)
         X = self.fc3(X)
         
-#         X = torch.sigmoid(X)
         return X
 
-my_transforms = transforms.Compose([
-    transforms.ToPILImage(),
-    transforms.Resize((512,512)),
-    transforms.RandomCrop((224,224)),
-    transforms.ToTensor(),
-    ])
 
-
-batch_size = 4
-num_classes = 3
-learning_rate = 1e-3
-num_epochs = 2
-in_channel = 1
-
-dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels_modified.csv", 
-                        root_dir = "/scratch/akera/mmic_data/physionet.org/files/mimic-cxr-jpg/2.0.0/files",
-                        transform = my_transforms)
-
-
-train_set, test_set = torch.utils.data.random_split(dataset, [50,50])
-
-train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)
-test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
 

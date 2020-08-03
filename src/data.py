@@ -47,6 +47,8 @@ dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels_modified
                         transform = my_transforms)
 
 
+batch_size = 4
+
 train_set, test_set = torch.utils.data.random_split(dataset, [50,50])
 
 train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)

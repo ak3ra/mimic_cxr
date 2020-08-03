@@ -13,6 +13,7 @@ import time
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = Convnet().to(device)
 
+batch_size = 4
 losses = []
 accuracies = []
 epoches = 1
