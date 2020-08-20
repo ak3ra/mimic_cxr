@@ -9,14 +9,23 @@ from data import my_transforms,dataset,train_set,test_set, train_loader, test_lo
 from torchvision import transforms
 from model import Convnet, CNN
 import time
+from torch.utils.tensorboard import SummaryWriter
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = Convnet().to(device)
+writer = SummaryWriter()
 
-batch_size = 4
+images, labels = next(iter(train_loader))
+grid = torchvision.utils.make_grid(images)
+writer.add_image('images', grid, 0)
+writer.add_graph(model, images)
+writer.close()
+
+batch_size = 16
 losses = []
 accuracies = []
-epoches = 1
+epoches = 500
 start = time.time()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
@@ -44,6 +53,8 @@ for epoch in range(epoches):
     accuracies.append(epoch_accuracy)
     epoch_loss = epoch_loss / len(train_loader)
     losses.append(epoch_loss)
+    writer.add_scalar('Loss/Train', epoch_loss, epoch)
+    writer.add_scalar('Accuracy/Train', epoch_accuracy, epoch)
     print("Epoch: {}, train loss: {:.4f}, train accracy: {:.4f}, time: {}".format(epoch, epoch_loss, epoch_accuracy, time.time() - start))
 
 
@@ -61,4 +72,6 @@ for epoch in range(epoches):
             val_epoch_accuracy += val_accuracy
         val_epoch_accuracy = val_epoch_accuracy/len(test_loader)
         val_epoch_loss = val_epoch_loss / len(test_loader)
+        writer.add_scalar('Loss/Test', val_epoch_loss, epoch)
+        writer.add_scalar('Accuracy/Test', val_epoch_accuracy, epoch)
         print("Epoch: {}, valid loss: {:.4f}, valid accracy: {:.4f}, time: {}\n".format(epoch, val_epoch_loss, val_epoch_accuracy, time.time() - start))
