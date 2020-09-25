@@ -13,13 +13,14 @@ import time
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = Convnet().to(device)
 
-batch_size = 4
+batch_size = 1
 losses = []
 accuracies = []
-epoches = 1
+epoches = 10
 start = time.time()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
+
 
 for epoch in range(epoches):
     epoch_loss = 0
