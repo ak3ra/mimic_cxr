@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from data import PneumoniaDataset
 from data import my_transforms,dataset,train_set,test_set, train_loader, test_loader
 from torchvision import transforms
-from model import Convnet, CNN
+from model import Convnet
 import time
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
