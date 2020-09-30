@@ -5,48 +5,13 @@ import torch.nn.functional as F
 import torchvision
 from torch.utils.data import DataLoader
 from data import PneumoniaDataset
-from torchvision import transforms
+from torchvision import transforms, models
 import time
 
 #set device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-
-#### simple CNN
-# class CNN(nn.Module):
-#     def __init__(self, in_channel=1, num_classes=2):
-#         super(CNN, self).__init__()
-#         self.conv1 = nn.Conv2d(
-#             in_channels = 1,
-#             out_channels = 8,
-#             kernel_size = (3,3),
-#             stride=(1,1),
-#             padding = (1,1)
-#         )
-
-#         self.pool = nn.MaxPool2d(kernel_size =  (2,2), stride=(2,2))
-#         self.conv2 = nn.Conv2d(
-#             in_channels = 8,
-#             out_channels = 16,
-#             kernel_size = (3,3),
-#             stride = (1,1),
-#             padding = (1,1)
-
-#         )
-
-#         self.fc1 = nn.Linear(50176, num_classes)
-
-
-#     def forward(self, x):
-#         x = F.relu(self.conv1(x))
-#         x = self.pool(x)
-#         x = F.relu(self.conv2(x))
-#         x = self.pool(x)
-#         x = x.reshape(x.shape[0],-1)
-#         x = self.fc1(x)
-
-#         return x
-
+### Simple Convnet
 class Convnet(nn.Module):
     def __init__(self):
         super().__init__()
@@ -74,6 +39,19 @@ class Convnet(nn.Module):
         X = self.fc3(X)
         
         return X
+
+class CustomResnet(nn.Module):
+    def __init__(self, in_channels=1):
+        super(CustomResnet, self).__init__()
+        self.model = models.resnet18(pretrained=True)
+        self.model.conv1 = nn.Conv2d(in_channels, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        num_features = self.model.fc.in_features
+        self.model.fc = nn.Linear(num_features, 3)
+
+    def forward(self, x):
+        return self.model(x)
+
+
 
 
 

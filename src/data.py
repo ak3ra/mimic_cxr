@@ -23,9 +23,6 @@ class PneumoniaDataset(Dataset):
         self.annotations = pd.read_csv(csv_file, nrows=4)
         self.root_dir = root_dir
         self.transform = transform
-        
-
-        
 
     def __len__(self):
         return len(self.annotations)
@@ -38,6 +35,8 @@ class PneumoniaDataset(Dataset):
 
         if self.transform:
             image = self.transform(image)
+            # print(image.shape)
+
 
         return (image, y_label)
 
