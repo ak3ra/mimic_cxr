@@ -1,0 +1,5 @@
+,Unnamed: 0,patient_id,study_id,image_id,image_path,Pneumonia
+0,0,p10000032,s50414267,02aa804e-bde0afdd-112c0b34-7bc16630-4e384014.jpg,/home/akera/Documents/code/data/physionet.org/mimic-cxr-jpg/2.0.0/files/p10/p10000032/s50414267/02aa804e-bde0afdd-112c0b34-7bc16630-4e384014.jpg,1.0
+1,1,p10000032,s50414267,174413ec-4ec4c1f7-34ea26b7-c5f994f8-79ef1962.jpg,/home/akera/Documents/code/data/physionet.org/mimic-cxr-jpg/2.0.0/files/p10/p10000032/s50414267/174413ec-4ec4c1f7-34ea26b7-c5f994f8-79ef1962.jpg,0.0
+2,2,p10000032,s53189527,2a2277a9-b0ded155-c0de8eb9-c124d10e-82c5caab.jpg,/home/akera/Documents/code/data/physionet.org/mimic-cxr-jpg/2.0.0/files/p10/p10000032/s53189527/2a2277a9-b0ded155-c0de8eb9-c124d10e-82c5caab.jpg,1.0
+2,2,p10000032,s53189527,e084de3b-be89b11e-20fe3f9f-9c8d8dfe-4cfd202c.jpg,/home/akera/Documents/code/data/physionet.org/mimic-cxr-jpg/2.0.0/files/p10/p10000032/s53189527/e084de3b-be89b11e-20fe3f9f-9c8d8dfe-4cfd202c.jpg,0.0

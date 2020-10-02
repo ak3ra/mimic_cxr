@@ -6,29 +6,26 @@ import torchvision
 from torch.utils.data import DataLoader
 from data import PneumoniaDataset
 from data import my_transforms,dataset,train_set,test_set, train_loader, test_loader
-from torchvision import transforms
-from model import Convnet, CNN
+from torchvision import transforms, models
+from model import Convnet, CustomResnet
 import time
 from torch.utils.tensorboard import SummaryWriter
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = Convnet().to(device)
-writer = SummaryWriter()
 
-#images, labels = next(iter(train_loader))
-#grid = torchvision.utils.make_grid(images)
-#writer.add_image('images', grid, 0)
-#writer.add_graph(model, images)
-#writer.close()
+model = CustomResnet().to(device) #To use resnet model and transfer learning
+writer = SummaryWriter()
 
 batch_size = 8
 losses = []
 accuracies = []
 epoches = 50
+
 start = time.time()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
+
 
 for epoch in range(epoches):
     epoch_loss = 0
