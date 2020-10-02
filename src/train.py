@@ -16,16 +16,16 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = Convnet().to(device)
 writer = SummaryWriter()
 
-images, labels = next(iter(train_loader))
-grid = torchvision.utils.make_grid(images)
-writer.add_image('images', grid, 0)
-writer.add_graph(model, images)
-writer.close()
+#images, labels = next(iter(train_loader))
+#grid = torchvision.utils.make_grid(images)
+#writer.add_image('images', grid, 0)
+#writer.add_graph(model, images)
+#writer.close()
 
-batch_size = 16
+batch_size = 8
 losses = []
 accuracies = []
-epoches = 500
+epoches = 50
 start = time.time()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
@@ -75,3 +75,7 @@ for epoch in range(epoches):
         writer.add_scalar('Loss/Test', val_epoch_loss, epoch)
         writer.add_scalar('Accuracy/Test', val_epoch_accuracy, epoch)
         print("Epoch: {}, valid loss: {:.4f}, valid accracy: {:.4f}, time: {}\n".format(epoch, val_epoch_loss, val_epoch_accuracy, time.time() - start))
+
+print("Finished Training")
+print("Saving trained model")
+torch.save(model.state_dict(), '../models/model.pt')

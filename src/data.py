@@ -20,7 +20,7 @@ my_transforms = transforms.Compose([
 
 class PneumoniaDataset(Dataset):
     def __init__(self, csv_file, root_dir, transform=None):
-        self.annotations = pd.read_csv(csv_file, nrows=8000)
+        self.annotations = pd.read_csv(csv_file, nrows=100)
         self.root_dir = root_dir
         self.transform = transform
 
@@ -43,9 +43,9 @@ dataset = PneumoniaDataset(csv_file="output/pneumonia_images_and_labels_modified
                         transform = my_transforms)
 
 
-batch_size = 16
+batch_size = 8
 
-train_set, test_set = torch.utils.data.random_split(dataset, [5600,2400])
+train_set, test_set = torch.utils.data.random_split(dataset, [50,50])
 train_loader = DataLoader(dataset=train_set,batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(dataset=test_set,batch_size=batch_size, shuffle=True)
 
